@@ -4,19 +4,6 @@ Simpson College Computer Science
 http://programarcadegames.com/
 http://simpson.edu/computer-science/
  
-From:
-http://programarcadegames.com/python_examples/f.php?file=platform_scroller.py
- 
-Explanation video: http://youtu.be/QplXBw_NK5Y
- 
-Part of a series:
-http://programarcadegames.com/python_examples/f.php?file=move_with_walls_example.py
-http://programarcadegames.com/python_examples/f.php?file=maze_runner.py
-http://programarcadegames.com/python_examples/f.php?file=platform_jumper.py
-http://programarcadegames.com/python_examples/f.php?file=platform_scroller.py
-http://programarcadegames.com/python_examples/f.php?file=platform_moving.py
-http://programarcadegames.com/python_examples/sprite_sheets/
- 
 """
  
 import pygame
@@ -114,7 +101,7 @@ def main_menu(screen):
  
         # Main Menu Text
         screen.blit(title, (screen_width/2 - (title_rect[2]/2), 80))
-        screen.blit(authors, (screen_width/2 - (author_rect[2]/2), 150));
+        screen.blit(authors, (screen_width/2 - (author_rect[2]/2), 180));
         screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
         screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 360))
         pygame.display.update()
