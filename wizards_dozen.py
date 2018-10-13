@@ -21,7 +21,7 @@ http://programarcadegames.com/python_examples/sprite_sheets/
  
 import pygame
 from pygame.locals import *
-
+from itertools import cycle
 import os
  
 # Global constants
@@ -39,12 +39,11 @@ red=(255, 0, 0)
 green=(0, 255, 0)
 blue=(0, 0, 255)
 yellow=(255, 255, 0)
- 
+counter=0;
 # Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
  
-
 
 # Game Initialization
 pygame.init()
@@ -131,8 +130,9 @@ class Player(pygame.sprite.Sprite):
     """
     This class represents the bar at the bottom that the player controls.
     """
- 
     # -- Methods
+    counter=0;
+    myIterator=cycle(range(3));
     def __init__(self):
         """ Constructor function """
  
@@ -223,9 +223,11 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load("resources/wizard_main_left_sprite.png");
  
     def go_right(self):
+        images = ['resources/walking/tiles-0.png','resources/walking/tiles-1.png',
+                  'resources/walking/tiles-2.png']
         """ Called when the user hits the right arrow. """
+        self.image = pygame.image.load(images[next(self.myIterator)]);
         self.change_x = 6
-        self.image = pygame.image.load("resources/wizard_main_sprite.png");
     def stop(self):
         """ Called when the user lets off the keyboard. """
         self.change_x = 0
@@ -350,7 +352,7 @@ class Level_02(Level):
             self.platform_list.add(block)
  
 def levelAlert(screen,message):
-        alert=text_format(message, font, 30, yellow)
+        alert=text_format(message, font, 30, black)
         alert_rect=alert.get_rect()
         area=screen.get_rect();
         # Main Menu Text
@@ -363,7 +365,7 @@ def main():
     # Set the height and width of the screen
     size = [SCREEN_WIDTH, SCREEN_HEIGHT]
     screen = pygame.display.set_mode(size)
- 
+
     pygame.display.set_caption("Side-scrolling Platformer")
     main_menu(screen)
     # Create the player
