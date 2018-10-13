@@ -271,6 +271,7 @@ class Level():
             platforms collide with the player. """
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
+        self.donut_list = pygame.sprite.Group();
         self.player = player
  
         # How far this world has been scrolled left/right
@@ -281,7 +282,7 @@ class Level():
         """ Update everything in this level."""
         self.platform_list.update()
         self.enemy_list.update()
-        #self.donut_list.update()
+        self.donut_list.update()
  
     def draw(self, screen):
         """ Draw everything on this level. """
@@ -291,7 +292,7 @@ class Level():
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
-        #self.donut_list.draw(screen);
+        self.donut_list.draw(screen);
  
     def shift_world(self, shift_x):
         """ When the user moves left/right and we need to scroll
@@ -306,6 +307,8 @@ class Level():
  
         for enemy in self.enemy_list:
             enemy.rect.x += shift_x
+        for donut in self.donut_list:
+            donut.rect.x += shift_x
  
  
 # Create platforms for the level
@@ -331,6 +334,7 @@ class Level_01(Level):
                  [310, 100, 1560, 300],
                  ]
         images = [['resources/dragon.png',1650,250]]
+        coins = [(500,460)]
  
         # Go through the array above and add platforms
         for platform in level:
@@ -344,6 +348,11 @@ class Level_01(Level):
             sprite.rect.x=images[0][1];
             sprite.rect.y=images[0][2];
             self.enemy_list.add(sprite);
+        for donut in coins:
+            coin  = Donuts();
+            coin.rect.x=donut[0];
+            coin.rect.y=donut[1];
+            self.donut_list.add(coin);
  
  
 # Create platforms for the level
@@ -368,7 +377,7 @@ class Level_02(Level):
                  [310, 35, 1560, 300],
         ]
         images = [['resources/dragon.png',1650,250]]
-        coins = []
+        coins = [(500,480)]
         # Go through the array above and add platforms
         for platform in level:
             block = Platform(platform[0], platform[1])
@@ -381,7 +390,12 @@ class Level_02(Level):
             sprite.rect.x=images[0][1];
             sprite.rect.y=images[0][2];
             self.enemy_list.add(sprite);
-        
+        for donut in coins:
+            coin  = Donuts();
+            coin.rect.x=donut[0];
+            coin.rect.y=donut[1];
+            self.donut_list.add(coin);
+            
 class Level_03(Level):
     """ Definition for level 2. """
  
