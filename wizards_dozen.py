@@ -377,7 +377,7 @@ class Level_02(Level):
                  [310, 35, 1560, 300],
         ]
         images = [['resources/dragon.png',1650,250]]
-        coins = [(500,480)]
+        coins = [(500,460)]
         # Go through the array above and add platforms
         for platform in level:
             block = Platform(platform[0], platform[1])
@@ -467,8 +467,8 @@ def main():
     # Create all the levels
     level_list = []
     level_list.append(Level_01(player))
-    #level_list.append(Level_02(player))
-    #level_list.append(Level_03(player));
+    level_list.append(Level_02(player))
+    level_list.append(Level_03(player));
  
     # Set the current level
     current_level_no = 0
