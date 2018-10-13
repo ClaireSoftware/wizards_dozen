@@ -247,7 +247,15 @@ class Platform(pygame.sprite.Sprite):
         self.image = pygame.image.load("resources/dirt.png");
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
- 
+
+class enemysprite(pygame.sprite.Sprite):
+    """ Enemy """
+
+    def __init__(self,image):
+        super().__init__()
+
+        self.image = pygame.image.load(image);
+        self.rect=self.image.get_rect();
  
 class Level():
     """ This is a generic super-class used to define a level.
@@ -352,15 +360,6 @@ class Level_02(Level):
             block.rect.y = platform[3]
             block.player = self.player
             self.platform_list.add(block)
-class Dragon(pygame.sprite.Sprite):
-    def __init__():
-        super().__init__();
-
-        self.image = pygame.image.load("resources/dragon.png");
-        pygame.draw.rect(self.image, None, [0,0,100,100]);
-
-        self.rect = image.get_rect();
-
 
 def levelAlert(screen,message):
         alert=text_format(message, font, 30, black)
@@ -434,10 +433,10 @@ def main():
  
         # Update the player.
         if rightwalk:
-            print("rightwalk");
+            #print("rightwalk");
             player.image = pygame.image.load(player.images[next(player.myIterator)]);
         if leftwalk:
-            print("leftwalk");
+            #print("leftwalk");
             player.image = pygame.image.load(player.leftimages[next(player.myIterator)]);
 
         active_sprite_list.update()
@@ -459,15 +458,18 @@ def main():
  
         # If the player gets to the end of the level, go to the next level
         current_position = player.rect.x + current_level.world_shift
+        print(current_position);
         if current_position < current_level.level_limit:
             player.rect.x = 120
             if current_level_no < len(level_list)-1:
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
-        if current_position < (current_level.level_limit - 300):
-            endDragon=dragon();
-            
+        if current_position < (current_level.level_limit + 200):
+            dragon=pygame.image.load("resources/dragon.png");
+            imagerect=dragon.get_rect()
+            screen.blit(dragon, (300,200))
+                
             
             
  
