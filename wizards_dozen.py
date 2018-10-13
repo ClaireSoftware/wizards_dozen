@@ -138,7 +138,7 @@ class Player(pygame.sprite.Sprite):
         # This could also be an image loaded from the disk.
         width = 64
         height = 64
-        self.image = pygame.image.load("resources/wizard_sprite.jpg");
+        self.image = pygame.image.load("resources/wizard_main_sprite.png");
  
         # Set a referance to the image rect.
         self.rect = self.image.get_rect()
