@@ -215,12 +215,12 @@ class Player(pygame.sprite.Sprite):
     def go_left(self):
         """ Called when the user hits the left arrow. """
         self.change_x = -6
-        self.image=
+        self.image = pygame.image.load("resources/wizard_main_left_sprite.png");
  
     def go_right(self):
         """ Called when the user hits the right arrow. """
         self.change_x = 6
- 
+        self.image = pygame.image.load("resources/wizard_main_sprite.png");
     def stop(self):
         """ Called when the user lets off the keyboard. """
         self.change_x = 0
