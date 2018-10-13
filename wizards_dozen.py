@@ -102,7 +102,7 @@ def main_menu(screen):
         title=text_format("A Wizard's Dozen", font, 90, yellow)
         font2 = "STIXGeneral.ttf"
         authors=text_format("by Aryana Dendy, Brandy Barfield, Claire Chambers," +
-        "and Elizabeth Skeie", font2, 20, yellow);
+        " and Elizabeth Skeie", font2, 20, yellow);
         if selected=="start":
             text_start=text_format("START", font, 75, white)
         else:
