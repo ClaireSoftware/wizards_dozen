@@ -39,6 +39,7 @@ red=(255, 0, 0)
 green=(0, 255, 0)
 blue=(0, 0, 255)
 yellow=(255, 255, 0)
+powderblue=(176, 224, 230)
 counter=0;
 # Screen dimensions
 SCREEN_WIDTH = 800
