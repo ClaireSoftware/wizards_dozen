@@ -39,6 +39,7 @@ red=(255, 0, 0)
 green=(0, 255, 0)
 blue=(0, 0, 255)
 yellow=(255, 255, 0)
+powderblue=(176, 224, 230)
 counter=0;
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -131,8 +132,10 @@ class Player(pygame.sprite.Sprite):
     This class represents the bar at the bottom that the player controls.
     """
     # -- Methods
-    counter=0;
     myIterator=cycle(range(3));
+    images = ['resources/walking/tiles-0.png','resources/walking/tiles-1.png',
+                  'resources/walking/tiles-2.png']
+    leftimages = ['resources/walking/tiles-0-left.png','resources/walking/tiles-1-left.png','resources/walking/tiles-2-left.png']
     def __init__(self):
         """ Constructor function """
  
@@ -143,7 +146,7 @@ class Player(pygame.sprite.Sprite):
         # This could also be an image loaded from the disk.
         width = 64
         height = 64
-        self.image = pygame.image.load("resources/wizard_main_sprite.png");
+        self.image = pygame.image.load("resources/walking/tiles-0.png");
  
         # Set a referance to the image rect.
         self.rect = self.image.get_rect()
@@ -220,13 +223,12 @@ class Player(pygame.sprite.Sprite):
     def go_left(self):
         """ Called when the user hits the left arrow. """
         self.change_x = -6
-        self.image = pygame.image.load("resources/wizard_main_left_sprite.png");
+        #self.image = pygame.image.load("resources/walking/tiles-0-left.png");
  
     def go_right(self):
-        images = ['resources/walking/tiles-0.png','resources/walking/tiles-1.png',
-                  'resources/walking/tiles-2.png']
+       
         """ Called when the user hits the right arrow. """
-        self.image = pygame.image.load(images[next(self.myIterator)]);
+        #self.image = pygame.image.load(images[next(self.myIterator)]);
         self.change_x = 6
     def stop(self):
         """ Called when the user lets off the keyboard. """
@@ -394,6 +396,8 @@ def main():
     clock = pygame.time.Clock()
  
     # -------- Main Program Loop -----------
+    rightwalk=False;
+    leftwalk=False;
     while not done:
         screen.blit(background,background_rect);
         levelAlert(screen, ("You are on level " +str((current_level_no +1)) +"!"));
@@ -404,7 +408,9 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     player.go_left()
+                    leftwalk=True;
                 if event.key == pygame.K_RIGHT:
+                    rightwalk=True;
                     player.go_right()
                 if event.key == pygame.K_UP:
                     player.jump()
@@ -412,10 +418,19 @@ def main():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT and player.change_x < 0:
                     player.stop()
+                    leftwalk=False;
                 if event.key == pygame.K_RIGHT and player.change_x > 0:
                     player.stop()
+                    rightwalk=False;
  
         # Update the player.
+        if rightwalk:
+            print("rightwalk");
+            player.image = pygame.image.load(player.images[next(player.myIterator)]);
+        if leftwalk:
+            print("leftwalk");
+            player.image = pygame.image.load(player.leftimages[next(player.myIterator)]);
+
         active_sprite_list.update()
  
         # Update items in the level
@@ -441,6 +456,8 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
+        if current_position < (current_level.level_limit - 100):
+            
  
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
