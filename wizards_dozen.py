@@ -20,6 +20,7 @@ http://programarcadegames.com/python_examples/sprite_sheets/
 """
  
 import pygame
+import time
 from pygame.locals import *
 from itertools import cycle
 import os
@@ -349,6 +350,40 @@ class Level_02(Level):
  
         # Array with type of platform, and x, y location of the platform.
         level = [[210, 35, 500, 500],
+                 [210, 35, 870, 450],
+                 [200, 35, 1000, 450],
+                 [210, 35, 1220, 400],
+                 [190, 35, 1450, 425],
+                 [100, 35, 1300, 300],
+                 [310, 35, 1560, 300],
+        ]
+        images = [['resources/dragon.png',1650,250]]
+        # Go through the array above and add platforms
+        for platform in level:
+            block = Platform(platform[0], platform[1])
+            block.rect.x = platform[2]
+            block.rect.y = platform[3]
+            block.player = self.player
+            self.platform_list.add(block)
+        for enemy in images:
+            sprite = Enemy(images[0][0]);
+            sprite.rect.x=images[0][1];
+            sprite.rect.y=images[0][2];
+            self.enemy_list.add(sprite);
+        
+class Level_03(Level):
+    """ Definition for level 2. """
+ 
+    def __init__(self, player):
+        """ Create level 1. """
+ 
+        # Call the parent constructor
+        Level.__init__(self, player)
+ 
+        self.level_limit = -1000
+ 
+        # Array with type of platform, and x, y location of the platform.
+        level = [[210, 35, 500, 500],
                  [210, 35, 710, 450],
                  [210, 35, 870, 450],
                  [210, 35, 1000, 450],
@@ -386,6 +421,8 @@ def main():
     background_rect = background.get_rect()
     background2 = pygame.image.load('resources/level2back.png');
     background2_rect = background2.get_rect();
+    background3 = pygame.image.load('resources/lev3back.png');
+    background3_rect = background3.get_rect();
  
     # Set the height and width of the screen
     size = [SCREEN_WIDTH, SCREEN_HEIGHT]
@@ -400,6 +437,7 @@ def main():
     level_list = []
     level_list.append(Level_01(player))
     level_list.append(Level_02(player))
+    level_list.append(Level_03(player));
  
     # Set the current level
     current_level_no = 0
@@ -426,6 +464,8 @@ def main():
             screen.blit(background,background_rect);
         elif current_level_no ==1:
             screen.blit(background2,background2_rect);
+        elif current_level_no == 2:
+            screen.blit(background3,background3_rect);
 
         
         levelAlert(screen, ("You are on level " +str((current_level_no +1)) +"!"));
@@ -485,7 +525,9 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
-            
+            else:
+                pygame.draw.rect(screen, white, [0, 0, 800, 600], 2)
+                break;
             
             
             
@@ -504,6 +546,8 @@ def main():
  
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
+
+    time.sleep(10);
     pygame.quit()
  
 if __name__ == "__main__":
