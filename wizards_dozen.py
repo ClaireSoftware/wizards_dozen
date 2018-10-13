@@ -456,7 +456,7 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
-        if current_position < (current_level.level_limit - 100):
+        #if current_position < (current_level.level_limit - 100):
             
  
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
