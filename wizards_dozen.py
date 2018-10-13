@@ -244,6 +244,14 @@ class Platform(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
 
+class Donuts(pygame.sprite.Sprite):
+    """ Enemy """
+
+    def __init__(self):
+        super().__init__()
+
+        self.image = pygame.image.load("resources/donut.png");
+        self.rect = self.image.get_rect();
 class Enemy(pygame.sprite.Sprite):
     """ Enemy """
 
@@ -273,6 +281,7 @@ class Level():
         """ Update everything in this level."""
         self.platform_list.update()
         self.enemy_list.update()
+        #self.donut_list.update()
  
     def draw(self, screen):
         """ Draw everything on this level. """
@@ -282,6 +291,7 @@ class Level():
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
+        #self.donut_list.draw(screen);
  
     def shift_world(self, shift_x):
         """ When the user moves left/right and we need to scroll
@@ -358,6 +368,7 @@ class Level_02(Level):
                  [310, 35, 1560, 300],
         ]
         images = [['resources/dragon.png',1650,250]]
+        coins = []
         # Go through the array above and add platforms
         for platform in level:
             block = Platform(platform[0], platform[1])
@@ -413,8 +424,14 @@ def levelAlert(screen,message):
         area=screen.get_rect();
         # Main Menu Text
         screen.blit(alert, (area[2]/8 - (alert_rect[2]/2), 0))
-    
+def scoreAlert(screen,message):
+        alert=text_format(message, font, 30, black)
+        alert_rect=alert.get_rect()
+        area=screen.get_rect();
+        # Main Menu Text
+        screen.blit(alert, (area[2]/8 - (alert_rect[2]/2), 20))
 def main():
+    score = 0;
     """ Main Program """
     pygame.init()
     background = pygame.image.load('resources/castle_background.png')
@@ -436,8 +453,8 @@ def main():
     # Create all the levels
     level_list = []
     level_list.append(Level_01(player))
-    level_list.append(Level_02(player))
-    level_list.append(Level_03(player));
+    #level_list.append(Level_02(player))
+    #level_list.append(Level_03(player));
  
     # Set the current level
     current_level_no = 0
@@ -469,6 +486,7 @@ def main():
 
         
         levelAlert(screen, ("You are on level " +str((current_level_no +1)) +"!"));
+        scoreAlert(screen, ("Score: " + str(score)));
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -526,7 +544,7 @@ def main():
                 current_level = level_list[current_level_no]
                 player.level = current_level
             else:
-                pygame.draw.rect(screen, white, [0, 0, 800, 600], 2)
+                print("Thanks for playing!");
                 break;
             
             
@@ -541,13 +559,15 @@ def main():
 
         # Limit to 60 frames per second
         clock.tick(FPS)
+    
  
         # Go ahead and update the screen with what we've drawn.
  
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
-
-    time.sleep(10);
+    #pygame.draw.rect(screen, white, [0, 0, 800, 600], 2)
+    #pygame.display.flip()
+    #time.sleep(10);
     pygame.quit()
  
 if __name__ == "__main__":
