@@ -24,6 +24,7 @@ simply ensure PyGame is installed and run wizards_dozen.py
 
 ## Authors
 
+* Initially written by  Aryana Dendy, Brandy Barfield, Claire Chambers, and Elizabeth Skeie at CUHackit HelloWorld 2018.
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
@@ -33,7 +34,4 @@ This project is licensed under the GPLv3 License - see the [LICENSE.md](LICENSE.
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
+* Hayden Riewe for mentorship and support throughout the development process
