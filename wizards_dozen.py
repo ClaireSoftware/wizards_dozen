@@ -68,6 +68,10 @@ font = "Retro.ttf"
 clock = pygame.time.Clock()
 FPS=30
 
+background = pygame.image.load('resources/castle_background.png')
+
+background_size = background.get_size()
+background_rect = background.get_rect()
 
 def main_menu(screen):
     screen_width=800
@@ -171,7 +175,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.left = block.rect.right
  
         # Move up/down
-        self.rect.y += self.change_y
+        self.rect.y += self.change_y 
  
         # Check and see if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -191,7 +195,7 @@ class Player(pygame.sprite.Sprite):
         if self.change_y == 0:
             self.change_y = 1
         else:
-            self.change_y += .35
+            self.change_y += .50
  
         # See if we are on the ground.
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -237,7 +241,7 @@ class Platform(pygame.sprite.Sprite):
         super().__init__()
  
         self.image = pygame.image.load("resources/dirt.png");
- 
+        self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
  
  
@@ -266,7 +270,6 @@ class Level():
         """ Draw everything on this level. """
  
         # Draw the background
-        screen.fill(BLUE)
  
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
@@ -300,13 +303,14 @@ class Level_01(Level):
         self.level_limit = -1000
  
         # Array with width, height, x, and y of platform # Difference of 160?
-        level = [[210, 70, 500, 500],
-                 [210, 70, 710, 450],
-                 [210, 70, 870, 450],
-                 [210, 70, 1000, 450],
-                 [210, 70, 1120, 290],
-                 [210, 70, 1200, 250],
-                 [210, 70, 1350, 300]
+        level = [[210, 35, 500, 500],
+                 [210, 35, 710, 450],
+                 [210, 35, 870, 450],
+                 [210, 35, 1000, 450],
+                 [210, 35, 1120, 400],
+                 [210, 35, 1250, 350],
+                 [210, 35, 1400, 300],
+                 [310, 100, 1560, 300],
                  ]
  
         # Go through the array above and add platforms
@@ -358,6 +362,7 @@ def main():
     main_menu(screen)
     # Create the player
     player = Player()
+    screen.blit(background,background_rect);
  
     # Create all the levels
     level_list = []
