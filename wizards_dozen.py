@@ -68,6 +68,7 @@ font = "Retro.ttf"
 clock = pygame.time.Clock()
 FPS=30
 
+
 def main_menu(screen):
     screen_width=800
     screen_height=600
@@ -95,8 +96,9 @@ def main_menu(screen):
  
         # Main Menu UI
         title=text_format("A Wizard's Dozen", font, 90, yellow)
+        font2 = "STIXGeneral.ttf"
         authors=text_format("by Aryana Dendy, Brandy Barfield, Claire Chambers," +
-        "and Elizabeth Skeie", font, 20, yellow);
+        "and Elizabeth Skeie", font2, 20, yellow);
         if selected=="start":
             text_start=text_format("START", font, 75, white)
         else:
@@ -119,7 +121,6 @@ def main_menu(screen):
         pygame.display.update()
         clock.tick(FPS)
         pygame.display.set_caption("Python - Pygame Simple Main Menu Selection")
-
 
 
 class Player(pygame.sprite.Sprite):
