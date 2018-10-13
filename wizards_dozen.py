@@ -352,7 +352,16 @@ class Level_02(Level):
             block.rect.y = platform[3]
             block.player = self.player
             self.platform_list.add(block)
- 
+class Dragon(pygame.sprite.Sprite):
+    def __init__():
+        super().__init__();
+
+        self.image = pygame.image.load("resources/dragon.png");
+        pygame.draw.rect(self.image, None, [0,0,100,100]);
+
+        self.rect = image.get_rect();
+
+
 def levelAlert(screen,message):
         alert=text_format(message, font, 30, black)
         alert_rect=alert.get_rect()
@@ -456,7 +465,10 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
-        #if current_position < (current_level.level_limit - 100):
+        if current_position < (current_level.level_limit - 300):
+            endDragon=dragon();
+            
+            
             
  
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
