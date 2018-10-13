@@ -362,7 +362,6 @@ def main():
     main_menu(screen)
     # Create the player
     player = Player()
-    screen.blit(background,background_rect);
  
     # Create all the levels
     level_list = []
@@ -388,6 +387,7 @@ def main():
  
     # -------- Main Program Loop -----------
     while not done:
+        screen.blit(background,background_rect);
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
