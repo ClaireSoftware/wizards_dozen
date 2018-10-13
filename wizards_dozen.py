@@ -88,13 +88,15 @@ def main_menu(screen):
                     selected="quit"
                 if event.key==pygame.K_RETURN:
                     if selected=="start":
-                        return 0;
+                        return 0;e
                     if selected=="quit":
                         pygame.quit()
                         quit()
  
         # Main Menu UI
-        title=text_format("Wizards Dozen", font, 90, yellow)
+        title=text_format("A Wizard's Dozen", font, 90, yellow)
+        authors=text_format("by Aryana Dendy, Brandy Barfield, Claire Chambers," +
+        "and Elizabeth Skeie", font, 20, yellow);
         if selected=="start":
             text_start=text_format("START", font, 75, white)
         else:
@@ -105,11 +107,13 @@ def main_menu(screen):
             text_quit = text_format("QUIT", font, 75, black)
  
         title_rect=title.get_rect()
+        author_rect=authors.get_rect()
         start_rect=text_start.get_rect()
         quit_rect=text_quit.get_rect()
  
         # Main Menu Text
         screen.blit(title, (screen_width/2 - (title_rect[2]/2), 80))
+        screen.blit(authors, (screen_width/2 - (author_rect[2]/2), 150));
         screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
         screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 360))
         pygame.display.update()
