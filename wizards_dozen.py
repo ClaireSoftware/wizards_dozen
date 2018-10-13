@@ -464,7 +464,7 @@ def main():
         # If the player gets to the end of the level, go to the next level
         current_position = player.rect.x + current_level.world_shift
         #print(current_position);
-        if current_position < current_level.level_limit:
+        if pygame.sprite.spritecollide(player, current_level.enemy_list, False):
             player.rect.x = 120
             if current_level_no < len(level_list)-1:
                 current_level_no += 1
