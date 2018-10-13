@@ -193,7 +193,7 @@ class Player(pygame.sprite.Sprite):
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:
-            self.change_y = 1
+            self.change_y = 2
         else:
             self.change_y += .50
  
@@ -349,7 +349,13 @@ class Level_02(Level):
             block.player = self.player
             self.platform_list.add(block)
  
- 
+def levelAlert(screen,message):
+        alert=text_format(message, font, 30, yellow)
+        alert_rect=alert.get_rect()
+        area=screen.get_rect();
+        # Main Menu Text
+        screen.blit(alert, (area[2]/8 - (alert_rect[2]/2), 0))
+    
 def main():
     """ Main Program """
     pygame.init()
@@ -388,6 +394,7 @@ def main():
     # -------- Main Program Loop -----------
     while not done:
         screen.blit(background,background_rect);
+        levelAlert(screen, ("You are on level " +str((current_level_no +1)) +"!"));
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
