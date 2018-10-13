@@ -50,7 +50,7 @@ SCREEN_HEIGHT = 600
 pygame.init()
  
 # Center the Game Application
-os.environ['SDL_VIDEO_CENTERED'] = '1'
+#os.environ['SDL_VIDEO_CENTERED'] = '1'
  
  
 # Text Renderer
@@ -66,8 +66,7 @@ font = "Retro.ttf"
  
 # Game Framerate
 clock = pygame.time.Clock()
-FPS=30
-
+FPS=60
 background = pygame.image.load('resources/castle_background.png')
 
 background_size = background.get_size()
@@ -123,7 +122,6 @@ def main_menu(screen):
         screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
         screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 360))
         pygame.display.update()
-        clock.tick(FPS)
         pygame.display.set_caption("Python - Pygame Simple Main Menu Selection")
 
 
@@ -222,14 +220,14 @@ class Player(pygame.sprite.Sprite):
     # Player-controlled movement:
     def go_left(self):
         """ Called when the user hits the left arrow. """
-        self.change_x = -6
+        self.change_x = -12
         #self.image = pygame.image.load("resources/walking/tiles-0-left.png");
  
     def go_right(self):
        
         """ Called when the user hits the right arrow. """
         #self.image = pygame.image.load(images[next(self.myIterator)]);
-        self.change_x = 6
+        self.change_x = 12
     def stop(self):
         """ Called when the user lets off the keyboard. """
         self.change_x = 0
@@ -248,14 +246,14 @@ class Platform(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
 
-class enemysprite(pygame.sprite.Sprite):
+class Enemy(pygame.sprite.Sprite):
     """ Enemy """
 
     def __init__(self,image):
         super().__init__()
 
         self.image = pygame.image.load(image);
-        self.rect=self.image.get_rect();
+        self.rect = self.image.get_rect();
  
 class Level():
     """ This is a generic super-class used to define a level.
@@ -312,7 +310,7 @@ class Level_01(Level):
         # Call the parent constructor
         Level.__init__(self, player)
  
-        self.level_limit = -1000
+        self.level_limit = -1650
  
         # Array with width, height, x, and y of platform # Difference of 160?
         level = [[210, 35, 500, 500],
@@ -324,6 +322,7 @@ class Level_01(Level):
                  [210, 35, 1400, 300],
                  [310, 100, 1560, 300],
                  ]
+        images = [['resources/dragon.png',1650,250]]
  
         # Go through the array above and add platforms
         for platform in level:
@@ -332,6 +331,11 @@ class Level_01(Level):
             block.rect.y = platform[3]
             block.player = self.player
             self.platform_list.add(block)
+        for enemy in images:
+            sprite = Enemy(images[0][0]);
+            sprite.rect.x=images[0][1];
+            sprite.rect.y=images[0][2];
+            self.enemy_list.add(sprite);
  
  
 # Create platforms for the level
@@ -360,6 +364,7 @@ class Level_02(Level):
             block.rect.y = platform[3]
             block.player = self.player
             self.platform_list.add(block)
+        
 
 def levelAlert(screen,message):
         alert=text_format(message, font, 30, black)
@@ -458,18 +463,15 @@ def main():
  
         # If the player gets to the end of the level, go to the next level
         current_position = player.rect.x + current_level.world_shift
-        print(current_position);
+        #print(current_position);
         if current_position < current_level.level_limit:
             player.rect.x = 120
             if current_level_no < len(level_list)-1:
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
-        if current_position < (current_level.level_limit + 200):
-            dragon=pygame.image.load("resources/dragon.png");
-            imagerect=dragon.get_rect()
-            screen.blit(dragon, (300,200))
-                
+            
+            
             
             
  
@@ -478,12 +480,12 @@ def main():
         active_sprite_list.draw(screen)
  
         # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
- 
+        pygame.display.flip()
+
         # Limit to 60 frames per second
-        clock.tick(30)
+        clock.tick(FPS)
  
         # Go ahead and update the screen with what we've drawn.
-        pygame.display.flip()
  
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
