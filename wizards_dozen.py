@@ -547,7 +547,12 @@ def main():
             diff = 120 - player.rect.left
             player.rect.left = 120
             current_level.shift_world(diff)
- 
+
+        if pygame.sprite.spritecollide(player, current_level.donut_list, False):
+            score = score + 1
+            
+            
+        
         # If the player gets to the end of the level, go to the next level
         current_position = player.rect.x + current_level.world_shift
         #print(current_position);
@@ -557,6 +562,7 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
+                score = score + 50;
             else:
                 print("Thanks for playing!");
                 break;
