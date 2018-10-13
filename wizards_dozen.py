@@ -95,9 +95,8 @@ def main_menu(screen):
  
         # Main Menu UI
         title=text_format("A Wizard's Dozen", font, 90, yellow)
-        font2 = "STIXGeneral.ttf"
         authors=text_format("by Aryana Dendy, Brandy Barfield, Claire Chambers," +
-        "and Elizabeth Skeie", font2, 20, yellow);
+        "and Elizabeth Skeie", font, 20, yellow);
         if selected=="start":
             text_start=text_format("START", font, 75, white)
         else:
@@ -299,11 +298,14 @@ class Level_01(Level):
  
         self.level_limit = -1000
  
-        # Array with width, height, x, and y of platform
+        # Array with width, height, x, and y of platform # Difference of 160?
         level = [[210, 70, 500, 500],
-                 [210, 70, 800, 400],
-                 [210, 70, 1000, 500],
-                 [210, 70, 1120, 280],
+                 [210, 70, 710, 450],
+                 [210, 70, 870, 450],
+                 [210, 70, 1000, 450],
+                 [210, 70, 1120, 290],
+                 [210, 70, 1200, 250],
+                 [210, 70, 1350, 300]
                  ]
  
         # Go through the array above and add platforms
