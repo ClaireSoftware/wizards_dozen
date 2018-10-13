@@ -67,10 +67,7 @@ font = "Retro.ttf"
 # Game Framerate
 clock = pygame.time.Clock()
 FPS=60
-background = pygame.image.load('resources/castle_background.png')
 
-background_size = background.get_size()
-background_rect = background.get_rect()
 
 def main_menu(screen):
     screen_width=800
@@ -196,7 +193,7 @@ class Player(pygame.sprite.Sprite):
         if self.change_y == 0:
             self.change_y = 2
         else:
-            self.change_y += .50
+            self.change_y += .5
  
         # See if we are on the ground.
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -220,7 +217,7 @@ class Player(pygame.sprite.Sprite):
     # Player-controlled movement:
     def go_left(self):
         """ Called when the user hits the left arrow. """
-        self.change_x = -12
+        self.change_x = -20
         #self.image = pygame.image.load("resources/walking/tiles-0-left.png");
  
     def go_right(self):
@@ -351,12 +348,16 @@ class Level_02(Level):
         self.level_limit = -1000
  
         # Array with type of platform, and x, y location of the platform.
-        level = [[210, 30, 450, 570],
-                 [210, 30, 850, 420],
-                 [210, 30, 1000, 520],
-                 [210, 30, 1120, 320],
+        level = [[210, 35, 500, 500],
+                 [210, 35, 710, 450],
+                 [210, 35, 870, 450],
+                 [210, 35, 1000, 450],
+                 [210, 35, 1120, 400],
+                 [210, 35, 1250, 350],
+                 [210, 35, 1400, 300],
+                 [310, 100, 1560, 300],
                  ]
- 
+        images = [['resources/dragon.png',1650,250]]
         # Go through the array above and add platforms
         for platform in level:
             block = Platform(platform[0], platform[1])
@@ -364,6 +365,11 @@ class Level_02(Level):
             block.rect.y = platform[3]
             block.player = self.player
             self.platform_list.add(block)
+        for enemy in images:
+            sprite = Enemy(images[0][0]);
+            sprite.rect.x=images[0][1];
+            sprite.rect.y=images[0][2];
+            self.enemy_list.add(sprite);
         
 
 def levelAlert(screen,message):
@@ -376,6 +382,10 @@ def levelAlert(screen,message):
 def main():
     """ Main Program """
     pygame.init()
+    background = pygame.image.load('resources/castle_background.png')
+    background_rect = background.get_rect()
+    background2 = pygame.image.load('resources/level2back.png');
+    background2_rect = background2.get_rect();
  
     # Set the height and width of the screen
     size = [SCREEN_WIDTH, SCREEN_HEIGHT]
@@ -412,7 +422,12 @@ def main():
     rightwalk=False;
     leftwalk=False;
     while not done:
-        screen.blit(background,background_rect);
+        if current_level_no == 0:
+            screen.blit(background,background_rect);
+        elif current_level_no ==1:
+            screen.blit(background2,background2_rect);
+
+        
         levelAlert(screen, ("You are on level " +str((current_level_no +1)) +"!"));
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
