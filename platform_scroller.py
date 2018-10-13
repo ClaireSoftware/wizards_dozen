@@ -147,8 +147,7 @@ class Platform(pygame.sprite.Sprite):
             """
         super().__init__()
  
-        self.image = pygame.Surface([width, height])
-        self.image.fill(GREEN)
+        self.image = pygame.image.load("dirt.png");
  
         self.rect = self.image.get_rect()
  
@@ -344,7 +343,7 @@ def main():
         # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
  
         # Limit to 60 frames per second
-        clock.tick(60)
+        clock.tick(30)
  
         # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
