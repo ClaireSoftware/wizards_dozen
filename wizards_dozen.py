@@ -1,23 +1,3 @@
-"""
-Sample Python/Pygame Programs
-Simpson College Computer Science
-http://programarcadegames.com/
-http://simpson.edu/computer-science/
- 
-From:
-http://programarcadegames.com/python_examples/f.php?file=platform_scroller.py
- 
-Explanation video: http://youtu.be/QplXBw_NK5Y
- 
-Part of a series:
-http://programarcadegames.com/python_examples/f.php?file=move_with_walls_example.py
-http://programarcadegames.com/python_examples/f.php?file=maze_runner.py
-http://programarcadegames.com/python_examples/f.php?file=platform_jumper.py
-http://programarcadegames.com/python_examples/f.php?file=platform_scroller.py
-http://programarcadegames.com/python_examples/f.php?file=platform_moving.py
-http://programarcadegames.com/python_examples/sprite_sheets/
- 
-"""
  
 import pygame
 import time
@@ -48,10 +28,9 @@ SCREEN_HEIGHT = 600
  
 
 # Game Initialization
-pygame.init()
  
 # Center the Game Application
-#os.environ['SDL_VIDEO_CENTERED'] = '1'
+os.environ['SDL_VIDEO_CENTERED'] = '1'
  
  
 # Text Renderer
@@ -62,7 +41,7 @@ def text_format(message, textFont, textSize, textColor):
     return newText
  
 # Game Fonts
-font = "Retro.ttf"
+font = "resources/Retro.ttf"
  
  
 # Game Framerate
@@ -74,9 +53,12 @@ def main_menu(screen):
     screen_width=800
     screen_height=600
     screen.fill(blue);
+    menumusic=pygame.mixer.Sound('resources/menusong.wav');
+    keysound=pygame.mixer.Sound('resources/jump_01.wav');
  
     menu=True
     selected="start"
+    menumusic.play();
  
     while menu:
         for event in pygame.event.get():
@@ -85,11 +67,20 @@ def main_menu(screen):
                 quit()
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_UP:
-                    selected="start"
+                    if selected == "quit":
+                        selected = "start";
+                    elif selected == "start":
+                        selected="quit"
+                    keysound.play();
                 elif event.key==pygame.K_DOWN:
-                    selected="quit"
+                    if selected == "quit":
+                        selected = "start";
+                    elif selected == "start":
+                        selected="quit"
+                    keysound.play();
                 if event.key==pygame.K_RETURN:
                     if selected=="start":
+                        menumusic.stop();
                         return 0;e
                     if selected=="quit":
                         pygame.quit()
@@ -97,7 +88,7 @@ def main_menu(screen):
  
         # Main Menu UI
         title=text_format("A Wizard's Dozen", font, 90, yellow)
-        font2 = "STIXGeneral.ttf"
+        font2 = "resources/STIXGeneral.ttf"
         authors=text_format("by Aryana Dendy, Brandy Barfield, Claire Chambers," +
         " and Elizabeth Skeie", font2, 20, yellow);
         if selected=="start":
@@ -197,9 +188,9 @@ class Player(pygame.sprite.Sprite):
             self.change_y += .5
  
         # See if we are on the ground.
-        if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
+        if self.rect.y >= (SCREEN_HEIGHT - 10  - self.rect.height) and self.change_y >= 0:
             self.change_y = 0
-            self.rect.y = SCREEN_HEIGHT - self.rect.height
+            self.rect.y = SCREEN_HEIGHT - 10 - self.rect.height
  
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -212,7 +203,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y -= 2
  
         # If it is ok to jump, set our speed upwards
-        if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
+        if len(platform_hit_list) > 0 or self.rect.bottom >= (SCREEN_HEIGHT - 10):
             self.change_y = -10
  
     # Player-controlled movement:
@@ -409,9 +400,9 @@ class Level_03(Level):
  
         # Array with type of platform, and x, y location of the platform.
         level = [[210, 35, 500, 500],
-                 [210, 35, 710, 450],
                  [210, 35, 870, 450],
                  [210, 35, 1000, 450],
+                 [210, 35, 14500, 450],
                  [210, 35, 1120, 400],
                  [210, 35, 1250, 350],
                  [210, 35, 1400, 300],
@@ -448,11 +439,19 @@ def main():
     score = 0;
     """ Main Program """
     pygame.init()
-    background = pygame.image.load('resources/castle_background.png')
+
+    # background music! :D
+
+    mainsong= pygame.mixer.Sound('resources/main.ogg')
+    background = pygame.transform.scale(pygame.image.load('resources/castle_background.png'),
+                                        (SCREEN_WIDTH,SCREEN_HEIGHT));
     background_rect = background.get_rect()
-    background2 = pygame.image.load('resources/level2back.png');
+
+    background2 = pygame.transform.scale(pygame.image.load('resources/level2back.png'),
+                                        (SCREEN_WIDTH,SCREEN_HEIGHT));
     background2_rect = background2.get_rect();
-    background3 = pygame.image.load('resources/lev3back.png');
+    background3 = pygame.transform.scale(pygame.image.load('resources/lev3back.png'),
+                                         (SCREEN_WIDTH,SCREEN_HEIGHT));
     background3_rect = background3.get_rect();
  
     # Set the height and width of the screen
@@ -461,6 +460,8 @@ def main():
 
     pygame.display.set_caption("Side-scrolling Platformer")
     main_menu(screen)
+    mainsong.play();
+
     # Create the player
     player = Player()
  
@@ -480,6 +481,9 @@ def main():
     player.rect.x = 340
     player.rect.y = SCREEN_HEIGHT - player.rect.height
     active_sprite_list.add(player)
+    
+    jumpsound = pygame.mixer.Sound('resources/jump_01.wav')
+    spellsound = pygame.mixer.Sound('resources/spell.wav')
  
     # Loop until the user clicks the close button.
     done = False
@@ -490,7 +494,10 @@ def main():
     # -------- Main Program Loop -----------
     rightwalk=False;
     leftwalk=False;
+    soundPlayed= False;
+    shot = False;
     while not done:
+        # Switch this to an array-based solution ASAP
         if current_level_no == 0:
             screen.blit(background,background_rect);
         elif current_level_no ==1:
@@ -499,8 +506,10 @@ def main():
             screen.blit(background3,background3_rect);
 
         
+        # Maybe change it so it doesn't alert every time, only if there's a change?
         levelAlert(screen, ("You are on level " +str((current_level_no +1)) +"!"));
         scoreAlert(screen, ("Score: " + str(score)));
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -514,6 +523,14 @@ def main():
                     player.go_right()
                 if event.key == pygame.K_UP:
                     player.jump()
+                    if not soundPlayed:
+                        jumpsound.play();
+                        soundPlayed = True;
+                if event.key == pygame.K_SPACE:
+                    if not shot:
+                        spellsound.play();
+                        #shootplayed = True;
+                    
  
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT and player.change_x < 0:
@@ -522,7 +539,8 @@ def main():
                 if event.key == pygame.K_RIGHT and player.change_x > 0:
                     player.stop()
                     rightwalk=False;
- 
+                if event.key == pygame.K_UP:
+                    pass;
         # Update the player.
         if rightwalk:
             #print("rightwalk");
@@ -530,6 +548,8 @@ def main():
         if leftwalk:
             #print("leftwalk");
             player.image = pygame.image.load(player.leftimages[next(player.myIterator)]);
+        if player.change_y == 0: # This can also trigger if you're in midair and change_y happens to be 0
+            soundPlayed = False;
 
         active_sprite_list.update()
  
@@ -548,7 +568,7 @@ def main():
             player.rect.left = 120
             current_level.shift_world(diff)
 
-        if pygame.sprite.spritecollide(player, current_level.donut_list, False):
+        if (pygame.sprite.spritecollide(player, current_level.donut_list, False)) and player.change_x > 0:
             score = score + 1
             
             
@@ -585,7 +605,7 @@ def main():
  
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
-    #pygame.draw.rect(screen, white, [0, 0, 800, 600], 2)
+    #pygame.draw.rect(screen, white, pygame.Rect(0, 0, 800, 600))
     #pygame.display.flip()
     #time.sleep(10);
     pygame.quit()
